@@ -252,8 +252,24 @@
     </section>
 
 
-    <section class="panel">
-      <div class="panel__title">Vrije periodes (gaps) — direct actie</div>
+   <section class="panel">
+      <div class="panel__header">
+        <div class="panel__title">Vrije periodes (gaps) — direct actie</div>
+
+        <div class="panel__actions">
+          <button
+            class="icon-btn" 
+            type="button"
+            data-action="expand"
+            data-target="gapsWrap"
+            aria-label="Vergroot tabel"
+            title="Vergroot tabel"
+          >
+            ⤢
+          </button>
+        </div>
+      </div>
+
       <div class="panel__body">
         <div id="gapsWrap" class="table-wrap"></div>
       </div>
@@ -261,7 +277,26 @@
 
     <!-- Details table -->
     <section class="panel">
-      <div class="panel__title">Details</div>
+      <div class="panel__header">
+        <div class="panel__title">Details</div>
+
+        <div class="panel__actions">
+          <button
+            class="icon-btn"
+            type="button"
+            data-action="download"
+            data-target="tableWrap"
+            aria-label="Download tabel"
+            title="Download als CSV"
+          >
+            <img
+              class="icon-btn__icon"
+              src="./assets/icons/download.png"
+              alt=""
+            />
+          </button>
+        </div>
+      </div>
       <div class="panel__body">
         <div id="tableWrap" class="table-wrap"></div>
       </div>
