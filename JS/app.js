@@ -1310,3 +1310,91 @@ document.addEventListener("click", (e) => {
   // Belangrijk: dit gebeurt direct op click (user gesture) -> nodig voor iOS share sheet
   shareOrDownloadChartPNG(target);
 });
+
+async function exportTableWrapToPDF(wrapId, fileBaseName = "tabel"){
+  const wrap = document.getElementById(wrapId);
+  if (!wrap) return;
+
+  const table = wrap.querySelector("table");
+  if (!table) {
+    alert("Geen tabel gevonden om te exporteren.");
+    return;
+  }
+
+  const { jsPDF } = window.jspdf || {};
+  if (!jsPDF) {
+    alert("jsPDF niet geladen. Check of de scripts in <head> staan.");
+    return;
+  }
+
+  // Titel uit panel pakken (netjes voor in PDF)
+  const panel = wrap.closest(".panel");
+  const title = panel?.querySelector(".panel__title")?.textContent?.trim() || "Tabel";
+
+  // Headers
+  const head = [
+    Array.from(table.querySelectorAll("thead th")).map(th => th.textContent.trim())
+  ];
+
+  // Body
+  const body = Array.from(table.querySelectorAll("tbody tr")).map(tr =>
+    Array.from(tr.querySelectorAll("td")).map(td => td.textContent.trim())
+  );
+
+  // PDF setup (A4 landscape, zodat brede tabellen passen)
+  const doc = new jsPDF({ orientation: "landscape", unit: "pt", format: "a4" });
+
+  doc.setFont("helvetica", "bold");
+  doc.setFontSize(14);
+  doc.text(title, 40, 34);
+
+  doc.setFont("helvetica", "normal");
+  doc.setFontSize(10);
+
+  doc.autoTable({
+    head,
+    body,
+    startY: 50,
+    theme: "grid",
+    styles: { fontSize: 9, cellPadding: 4, overflow: "linebreak" },
+    headStyles: { fontStyle: "bold" },
+    margin: { left: 40, right: 40 },
+  });
+
+  // iOS: probeer share sheet met PDF, anders download
+  const pdfBlob = doc.output("blob");
+  const fileName = `${fileBaseName}-${new Date().toISOString().slice(0,10)}.pdf`;
+  const file = new File([pdfBlob], fileName, { type: "application/pdf" });
+
+  if (navigator.canShare && navigator.canShare({ files: [file] }) && navigator.share) {
+    try {
+      await navigator.share({ files: [file], title });
+      return;
+    } catch (e) {
+      return; // user cancelled
+    }
+  }
+
+  // Desktop / fallback
+  const url = URL.createObjectURL(pdfBlob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = fileName;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 5000);
+}
+
+// Event handler voor PDF-knoppen
+document.addEventListener("click", (e) => {
+  const btn = e.target.closest("[data-action='pdf']");
+  if (!btn) return;
+
+  const target = btn.getAttribute("data-target");
+  if (!target) return;
+
+  const base = target === "tableWrap" ? "details" : "vrije-periodes";
+  exportTableWrapToPDF(target, base);
+});
+
