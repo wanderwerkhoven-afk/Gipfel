@@ -126,6 +126,18 @@ body{
   box-shadow: 0 8px 24px rgba(0,0,0,.25);
 }
 
+/* Algemene panel body */
+.panel__body{
+  padding:14px;
+}
+
+/* Extra ademruimte rondom charts */
+.panel__body canvas{
+  padding:8px;              /* 👈 dit is de key */
+  box-sizing:border-box;
+}
+
+
 .panel__title{
   margin:0;
   font-weight:850;
