@@ -115,12 +115,29 @@
 
     <section class="grid">
       <div class="panel">
-        <div class="panel__title">Boekingen & nachten per maand</div>
+        <div class="panel__header">
+          <div class="panel__title">Boekingen & nachten per maand</div>
+
+          <div class="panel__actions">
+            <button
+              class="icon-btn"
+              type="button"
+              data-action="download"
+              data-target="chartBookingsNights"
+              aria-label="Download grafiek"
+              title="Download als PNG"
+            >
+              <img class="icon-btn__icon" src="./assets/icons/download.png" alt="" />
+            </button>
+          </div>
+        </div>
+
         <div class="panel__body">
-          <canvas id="chartBookingsNights"></canvas>
+          <canvas id="chartBookingsNights" class="canvas--tall"></canvas>
         </div>
       </div>
     </section>
+
 
     <section class="grid">
       <div class="panel">

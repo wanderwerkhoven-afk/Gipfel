@@ -142,14 +142,33 @@ body{
   border-bottom:1px solid var(--border);
 }
 
-.panel__body{
-  padding:14px;
-}
-
 @media (max-width: 420px){
   .panel__header{
     padding:10px 12px;
   }
+
+.panel__body canvas{
+  width: 100% !important;
+  height: 280px !important;
+  display: block;
+}
+
+@media (orientation: landscape){
+  .panel__body canvas{
+    height: 360px !important;
+  }
+}
+
+/* Extra hoogte voor drukkere grafieken */
+.canvas--tall{
+  height: 380px !important;
+}
+
+@media (orientation: landscape){
+  .canvas--tall{
+    height: 520px !important;
+  }
+}
 
   .icon-btn{
     width:40px;
