@@ -82,11 +82,20 @@ body{
   padding:18px;
 }
 
-.cards{
-  display:grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-  gap:12px;
-  margin-top:10px;
+.cards {
+  display: grid;
+  /* Forceert exact 2 kolommen op kleine schermen */
+  grid-template-columns: repeat(2, 1fr); 
+  gap: 10px;
+  margin-top: 10px;
+}
+
+/* Zodra er meer ruimte is (bijv. tablet/desktop), mag hij opschalen */
+@media (min-width: 600px) {
+  .cards {
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 12px;
+  }
 }
 
 .card{
